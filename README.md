@@ -33,8 +33,6 @@ El proyecto está organizado en tres partes principales para mantener el código
 Para ejecutar el proyecto, se crea la base de datos en PostgreSQL:
 sudo -u postgres psql  
 
-SQL
-
 CREATE DATABASE proyecto\_contactos;  
 CREATE USER alumno WITH ENCRYPTED PASSWORD 'alumno';  
 ALTER DATABASE proyecto\_contactos OWNER TO alumno;  
