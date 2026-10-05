@@ -31,9 +31,6 @@ El proyecto está organizado en tres partes principales para mantener el código
 ## 🗄️ Configuración de la Base de Datos
 
 Para ejecutar el proyecto, se crea la base de datos en PostgreSQL:
-
-Bash
-
 sudo -u postgres psql  
 
 SQL
@@ -48,13 +45,9 @@ __(Nota: Sequelize se encarga automáticamente de crear las tablas en la base de
 ## ⚙️ Cómo ejecutar el proyecto
 
 1.  ****Instalar dependencias:****  
-    Bash
-    
     npm install  
     
 2.  ****Iniciar el servidor:****  
-    Bash
-    
     npm run dev  
     
 3.  ****Abrir en el navegador:****  
