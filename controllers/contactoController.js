@@ -9,7 +9,7 @@ exports.listar = async (req, res) => {
                 as: 'provincia',
                 attributes: ['id', 'nombre'] // Ignora createdAt/updatedAt
             }],
-            order: [['nombre', 'ASC']]
+            order: [['id', 'ASC']]
         });
         res.render('contactos/index', { contactos });
     } catch (error) {

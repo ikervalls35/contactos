@@ -1,43 +1,43 @@
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
-module.exports = function (passport) {
-    passport.use(
-        new LocalStrategy(
-            { usernameField: 'username' },
-            async (username, password, done) => {
-                try {
-                    // Cerca l'usuari per nom d'usuari
-                    const user = await User.findOne({ where: { username } });
-                    if (!user) {
-                        return done(null, false, { message: 'Usuari no trobat' });
-                    }
-
-                    // Compara la contrasenya
-                    const match = await bcrypt.compare(password, user.password);
-                    if (match) {
-                        return done(null, user);
-                    } else {
-                        return done(null, false, { message: 'Contrasenya incorrecta' });
-                    }
-                } catch (err) {
-                    return done(err);
-                }
-            }
-        )
-    );
-
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
-    });
-
-    passport.deserializeUser(async (id, done) => {
+passport.use(new LocalStrategy(
+    async (username, password, done) => {
         try {
-            const user = await User.findByPk(id);
-            done(null, user);
-        } catch (err) {
-            done(err, null);
+            const user = await User.findOne({ where: { username } });
+            if (!user) {
+                return done(null, false, { message: 'Usuario no encontrado' });
+            }
+
+            // Si usas un método de verificación o comparación simple
+            const isValidPassword = user.password === password;
+            // Nota: Si usas bcrypt, sería: await bcrypt.compare(password, user.password)
+
+            if (!isValidPassword) {
+                return done(null, false, { message: 'Contraseña incorrecta' });
+            }
+
+            return done(null, user);
+        } catch (error) {
+            return done(error);
         }
-    });
-};
+    }
+));
+
+// Serializar usuario en la sesión
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+// Deserializar usuario desde la sesión
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findByPk(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
+});
+
+module.exports = passport;
