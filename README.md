@@ -1,44 +1,40 @@
 # 📇 Gestor de Contactos - Express & Sequelize
 
-Este proyecto es una aplicación web full-stack para la gestión de contactos (CRUD) con autenticación de usuarios, desarrollada como práctica de programación en el lado del servidor. El objetivo ha sido construir una aplicación robusta utilizando arquitectura MVC, gestión de sesiones seguras y relaciones jerárquicas en la base de datos (Contactos ➡️ Provincias ➡️ Países).
+Este proyecto es una aplicación web para la gestión de contactos (CRUD) con sistema de usuarios e inicio de sesión. Está construida desde cero utilizando el patrón de diseño ****MVC (Modelo-Vista-Controlador)****.
 
-## 🚀 Tecnologías Utilizadas
+## 🚀 Tecnologías y para qué sirve cada una
 
--   ****Backend:**** Node.js / Express
--   ****Autenticación:**** Passport.js (Local Strategy) & bcrypt
--   ****Base de Datos:**** PostgreSQL
--   ****ORM:**** Sequelize
--   ****Motor de Plantillas & Estilos:**** EJS & Bootstrap 5 (con Bootstrap Icons)
+-   ****Node.js & Express:**** Es el motor del servidor. Express se encarga de gestionar el tráfico de la web (las rutas como `/login` o `/contactos`), recibir los datos de los formularios y devolver las páginas al usuario.
+-   ****PostgreSQL:**** La base de datos donde se guardan de forma permanente los usuarios, contactos, provincias y países.
+-   ****Sequelize (ORM):**** Es el puente de comunicación entre Node.js y PostgreSQL. Permite hacer consultas a la base de datos escribiendo código JavaScript en lugar de consultas SQL complejas.
+-   ****Passport.js & bcrypt:**** Se encarga de la seguridad. Permite iniciar sesión, mantener la sesión abierta del usuario y encriptar las contraseñas antes de guardarlas en la base de datos.
+-   ****EJS & Bootstrap 5:**** Crean las pantallas visuales (HTML) con botones, tablas y formularios adaptables para cualquier pantalla.
 
-## 🧠 ¿Cómo funciona esta arquitectura Express + Sequelize? (Guía rápida)
+## 🧠 ¿Cómo funciona la aplicación por dentro? (Guía básica)
 
-La aplicación sigue el patrón de diseño ****MVC (Modelo-Vista-Controlador)**** separando las responsabilidades de forma clara para mantener un código limpio y modular:
+El proyecto está organizado en tres partes principales para mantener el código ordenado:
 
-1.  ****Modelos (******`**/models**`******):**** Definen la estructura de las tablas (`User`, `Contacto`, `Provincia`, `Pais`) y sus asociaciones relacionales en la base de datos mediante Sequelize (claves foráneas y relaciones `belongsTo` / `hasMany`).
-2.  ****Rutas / Controladores (******`**/routes**`******):**** Actúan como intermediarios interceptando las peticiones HTTP que llegan desde el navegador (`GET`, `POST`). Procesan la lógica de autenticación con Passport.js, gestionan la entrada de formularios y coordinan las consultas con la base de datos.
-3.  ****Vistas (******`**/views**`******):**** Plantillas dinámicas EJS maquetadas con Bootstrap 5 que renderizan la interfaz gráfica: formularios de login/registro, listado de contactos y pantallas de creación o edición.
+1.  ****Los Modelos (******`**/models**`******):**** Definen la estructura de los datos. Le dicen a Sequelize cómo son las tablas en PostgreSQL (por ejemplo: la tabla `User` tiene usuario, correo, teléfono y contraseña; y la tabla `Contacto` tiene una provincia vinculada).
+2.  ****Las Rutas y Controladores (******`**/routes**`******):**** Son la "lógica" de la aplicación. Cuando entras a una página o envías un formulario:
+3.  -   Verifican si estás autenticado.
+    -   Le piden los datos a Sequelize.
+    -   Cifran contraseñas o guardan nuevos contactos.
+    -   Te redirigen a la página correspondiente.
+4.  ****Las Vistas (******`**/views**`******):**** Son las plantillas HTML (archivos `.ejs`). Muestran en pantalla los datos recuperados de la base de datos y los formularios estilizados con Bootstrap 5.
 
-****El flujo básico de este proyecto es:**** El usuario entra a `/contactos` ➡️ El middleware de ****Passport**** valida la sesión ➡️ La ****Ruta**** consulta la lista de contactos a PostgreSQL mediante ****Sequelize**** (incluyendo sus Provincias y Países asociados) ➡️ La ****Ruta**** pasa los datos a la vista `.ejs` ➡️ Se renderiza el HTML final en pantalla.
+## 🔄 El flujo completo del usuario
 
-## 🗄️ Configuración de la Base de Datos (PostgreSQL)
+1.  ****Registro e Inicio de Sesión (******`**/registro**`** ****y**** **`**/login**`******):**** El usuario crea una cuenta. La contraseña se cifra con `bcrypt` y se guarda en la tabla `users`. Al iniciar sesión, Passport valida los datos y mantiene la sesión activa.
+2.  ****Lista de Contactos (******`**/contactos**`******):**** Una vez dentro, el usuario ve una tabla con sus contactos y la información de la provincia y país asociados.
+3.  ****Creación y Edición (******`**/contactos/crear**`** ****y**** **`**/contactos/editar/:id**`******):**** Se puede añadir un nuevo contacto seleccionando su provincia desde un desplegable o modificar un contacto existente y guardarlo o borrarlo.
 
-Para que el ORM de Express (Sequelize) pueda conectarse y sincronizar las tablas automáticamente, es necesario que el motor de base de datos esté instalado y configurado en Ubuntu.
+## 🗄️ Configuración de la Base de Datos
 
-****1\. Instalación del Motor****
-
-Bash
-
-sudo apt update  
-sudo apt install postgresql postgresql-contrib -y  
-sudo systemctl start postgresql  
-
-****2\. Creación del Usuario y la Base de Datos**** Accede a la consola de administración de PostgreSQL:
+Para ejecutar el proyecto, se crea la base de datos en PostgreSQL:
 
 Bash
 
 sudo -u postgres psql  
-
-Dentro de la consola SQL, ejecuta las siguientes instrucciones para preparar el entorno:
 
 SQL
 
@@ -47,21 +43,22 @@ CREATE USER alumno WITH ENCRYPTED PASSWORD 'alumno';
 ALTER DATABASE proyecto\_contactos OWNER TO alumno;  
 \\q  
 
-__Nota: Gracias a la sincronización de modelos (___`_sync()_`___), Sequelize genera y mapea automáticamente las tablas__ _`_users_`___,__ _`_contactos_`___,__ _`_provincias_`_ __y__ _`_paises_`_ __al arrancar el servidor.__
+__(Nota: Sequelize se encarga automáticamente de crear las tablas en la base de datos al arrancar el servidor).__
 
-## ⚙️ Instalación y Despliegue
+## ⚙️ Cómo ejecutar el proyecto
 
-1.  ****Instalar las dependencias del proyecto:****  
+1.  ****Instalar dependencias:****  
     Bash
     
     npm install  
     
-2.  ****Iniciar el servidor en modo desarrollo:****  
+2.  ****Iniciar el servidor:****  
     Bash
     
     npm run dev  
     
-3.  ****Acceder a la aplicación:**** Abre tu navegador web y visita:[http://localhost:8080/login](http://localhost:8080/login)
+3.  ****Abrir en el navegador:****  
+    [http://localhost:8080/login](http://localhost:8080/login)
 
 🔗[****Enlace IA****](https://share.gemini.google/bZ7LZcYpRkPs)
 
