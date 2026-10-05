@@ -69,4 +69,4 @@ Hola Víctor, en el siguiente enlace puedes ver el historial completo de la conv
 
 🔗[****Historial del proceso de desarrollo****](https://share.gemini.google/bZ7LZcYpRkPs)
 
-__Desarrollado por Carlos Javier Castaños Blanco - 2º DAW__
+__Desarrollado por Iker Valls Jiménez - 2º DAW__
