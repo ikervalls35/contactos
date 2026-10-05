@@ -1,36 +1,35 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { User } = require('../models');
+const bcrypt = require('bcrypt');
+const { User } = require('../models'); // Importar User
 
-passport.use(new LocalStrategy(
-    async (username, password, done) => {
-        try {
-            const user = await User.findOne({ where: { username } });
-            if (!user) {
-                return done(null, false, { message: 'Usuario no encontrado' });
-            }
+passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password'
+}, async (username, password, done) => {
+    try {
+        const user = await User.findOne({ where: { username } });
 
-            // Si usas un método de verificación o comparación simple
-            const isValidPassword = user.password === password;
-            // Nota: Si usas bcrypt, sería: await bcrypt.compare(password, user.password)
-
-            if (!isValidPassword) {
-                return done(null, false, { message: 'Contraseña incorrecta' });
-            }
-
-            return done(null, user);
-        } catch (error) {
-            return done(error);
+        if (!user) {
+            return done(null, false, { message: 'Usuario no encontrado' });
         }
-    }
-));
 
-// Serializar usuario en la sesión
+        const coincide = bcrypt.compareSync(password, user.password);
+
+        if (!coincide) {
+            return done(null, false, { message: 'Contraseña incorrecta' });
+        }
+
+        return done(null, user);
+    } catch (error) {
+        return done(error);
+    }
+}));
+
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-// Deserializar usuario desde la sesión
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await User.findByPk(id);

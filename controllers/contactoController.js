@@ -7,10 +7,16 @@ exports.listar = async (req, res) => {
             include: [{
                 model: Provincia,
                 as: 'provincia',
-                attributes: ['id', 'nombre'] // Ignora createdAt/updatedAt
+                attributes: ['id', 'nombre'],
+                include: [{
+                    model: Pais,
+                    as: 'pais',
+                    attributes: ['id', 'nombre']
+                }]
             }],
             order: [['id', 'ASC']]
         });
+
         res.render('contactos/index', { contactos });
     } catch (error) {
         console.error('❌ Error exacto al listar contactos:', error);
