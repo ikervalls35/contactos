@@ -1,0 +1,10 @@
+<ul>
+  <% contactos.forEach(contacto=> { %>
+    <li>
+      <strong>
+        <%= contacto.nombre %>
+      </strong> - <%= contacto.telefono %> (<%= contacto.provincia ? contacto.provincia.nombre : 'Sin provincia' %>)
+          <a href="/contacto/<%= contacto.id %>">Ver detalle</a>
+    </li>
+    <% }); %>
+</ul>
