@@ -51,6 +51,6 @@ __(Nota: Sequelize se encarga automáticamente de crear las tablas en la base de
 3.  ****Abrir en el navegador:****  
     [http://localhost:8080/login](http://localhost:8080/login)
 
-🔗[****Enlace IA****](https://share.gemini.google/bZ7LZcYpRkPs)
+🔗[****Enlace IA****](https://share.gemini.google/xMUuY5N6IGXL)
 
 __Desarrollado por Iker Valls Jiménez - 2º DAW__
