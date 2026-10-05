@@ -31,6 +31,7 @@ El proyecto está organizado en tres partes principales para mantener el código
 ## 🗄️ Configuración de la Base de Datos
 
 Para ejecutar el proyecto, se crea la base de datos en PostgreSQL:
+
 sudo -u postgres psql  
 
 CREATE DATABASE proyecto\_contactos;  
