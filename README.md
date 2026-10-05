@@ -63,10 +63,6 @@ __Nota: Gracias a la sincronización de modelos (___`_sync()_`___), Sequelize ge
     
 3.  ****Acceder a la aplicación:**** Abre tu navegador web y visita:[http://localhost:8080/login](http://localhost:8080/login)
 
-## 👨‍🏫 Notas para el profesor (Víctor Ponz)
-
-Hola Víctor, en el siguiente enlace puedes ver el historial completo de la conversación y el proceso de razonamiento guiado mediante IA para estructurar, configurar y programar la práctica:
-
-🔗[****Historial del proceso de desarrollo****](https://share.gemini.google/bZ7LZcYpRkPs)
+🔗[****Enlace IA****](https://share.gemini.google/bZ7LZcYpRkPs)
 
 __Desarrollado por Iker Valls Jiménez - 2º DAW__
