@@ -36,3 +36,40 @@ Para que Sequelize pueda conectarse y sincronizar las tablas de la aplicación, 
 sudo apt update
 sudo apt install postgresql postgresql-contrib -y
 sudo systemctl start postgresql
+
+2. Creación del Usuario y la Base de Datos
+Accede a la consola de administración de PostgreSQL:
+
+Bash
+sudo -u postgres psql
+Dentro de la consola SQL, ejecuta las siguientes instrucciones para preparar el entorno:
+
+SQL
+CREATE DATABASE proyecto_contactos;
+CREATE USER alumno WITH ENCRYPTED PASSWORD 'alumno';
+ALTER DATABASE proyecto_contactos OWNER TO alumno;
+\q
+Nota: Con la sincronización de modelos (alter: true / sync()), Sequelize genera y actualiza automáticamente las tablas users, contactos, provincias y paises al iniciar la aplicación.
+
+⚙️ Instalación y Despliegue
+Instalar las dependencias del proyecto:
+
+Bash
+npm install
+Iniciar el servidor en modo desarrollo (con Nodemon):
+
+Bash
+npm run dev
+(O alternativamente: node app.js)
+
+Acceder a la aplicación:
+Abre tu navegador web y visita:
+
+http://localhost:8080/login
+
+👨‍🏫 Notas para el profesor (Víctor Ponz)
+Hola Víctor, en el siguiente enlace puedes ver el historial completo de la conversación y el proceso de razonamiento guiado mediante IA para estructurar, configurar y programar la práctica:
+
+🔗 Historial del proceso de desarrollo
+
+Desarrollado para 2º DAW
