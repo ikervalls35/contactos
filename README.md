@@ -55,11 +55,7 @@ El proyecto está organizado en tres partes principales para mantener el código
 
 Para ejecutar el proyecto, se crea la base de datos en PostgreSQL ejecutando en la consola:
 
-Bash
-
 sudo -u postgres psql  
-
-SQL
 
 CREATE DATABASE proyecto\_contactos;  
 CREATE USER alumno WITH ENCRYPTED PASSWORD 'alumno';  
@@ -71,13 +67,11 @@ ALTER DATABASE proyecto\_contactos OWNER TO alumno;
 ## ⚙️ Cómo ejecutar el proyecto
 
 1.  **Instalar dependencias:**  
-    Bash
     
     npm install  
     
 2.  **Iniciar el servidor en modo desarrollo:**  
-    Bash
-    
+   
     npm run dev  
     
 3.  **Abrir en el navegador:**[http://localhost:8080/login](http://localhost:8080/login)
