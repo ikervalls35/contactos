@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { Contacto, Provincia, Pais } = require('../models');
 
-// GET: Listar todos los contactos
+// Importar middleware de autenticación
+const { estaAutenticado } = require('../middlewares/auth'); // Ajusta la ruta a tu archivo auth.js si es necesario
+
+// GET: Listar todos los contactos (ACCESO PÚBLICO)
 router.get('/', async (req, res) => {
     try {
         const contactos = await Contacto.findAll({
@@ -20,8 +23,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET: Formulario para crear contacto
-router.get('/crear', async (req, res) => {
+// GET: Formulario para crear contacto (PROTEGIDO)
+router.get('/crear', estaAutenticado, async (req, res) => {
     try {
         const provincias = await Provincia.findAll({
             include: [{ model: Pais, as: 'pais' }],
@@ -34,8 +37,8 @@ router.get('/crear', async (req, res) => {
     }
 });
 
-// POST: Procesar nuevo contacto
-router.post('/crear', async (req, res) => {
+// POST: Procesar nuevo contacto (PROTEGIDO)
+router.post('/crear', estaAutenticado, async (req, res) => {
     try {
         const { nombre, telefono, email, provincia_id } = req.body;
         await Contacto.create({
@@ -51,8 +54,9 @@ router.post('/crear', async (req, res) => {
     }
 });
 
-// GET: Formulario para EDITAR contacto (Soporta ambas URLs: /editar/:id y /:id/editar)
-router.get(['/editar/:id', '/:id/editar'], async (req, res) => {
+// GET: Formulario para EDITAR / VER contacto (PROTEGIDO)
+// Si un usuario no logueado hace clic en "Solo lectura", entra aquí y el middleware lo redirige a /auth/login
+router.get(['/editar/:id', '/:id/editar'], estaAutenticado, async (req, res) => {
     try {
         const contacto = await Contacto.findByPk(req.params.id, {
             include: [{
@@ -78,8 +82,8 @@ router.get(['/editar/:id', '/:id/editar'], async (req, res) => {
     }
 });
 
-// POST: Procesar la edición del contacto
-router.post(['/editar/:id', '/:id/editar'], async (req, res) => {
+// POST: Procesar la edición del contacto (PROTEGIDO)
+router.post(['/editar/:id', '/:id/editar'], estaAutenticado, async (req, res) => {
     try {
         const { nombre, telefono, email, provincia_id } = req.body;
 
@@ -99,8 +103,9 @@ router.post(['/editar/:id', '/:id/editar'], async (req, res) => {
         res.status(500).send('Error al guardar cambios');
     }
 });
-// POST: Eliminar un contacto
-router.post(['/eliminar/:id', '/:id/eliminar'], async (req, res) => {
+
+// POST: Eliminar un contacto (PROTEGIDO)
+router.post(['/eliminar/:id', '/:id/eliminar'], estaAutenticado, async (req, res) => {
     try {
         await Contacto.destroy({
             where: { id: req.params.id }

@@ -4,8 +4,11 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
-// GET: Vista de Login (views/auth/login.ejs)
-router.get('/login', (req, res) => {
+// Importar middlewares de autenticación
+const { estaAutenticado, noAutenticado } = require('../middlewares/auth');
+
+// GET: Vista de Login (Si ya está logueado, lo manda a /contactos)
+router.get('/login', noAutenticado, (req, res) => {
     res.render('auth/login');
 });
 
@@ -15,8 +18,8 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login'
 }));
 
-// GET: Vista de Registro (views/auth/registro.ejs)
-router.get('/registro', (req, res) => {
+// GET: Vista de Registro (Si ya está logueado, lo manda a /contactos)
+router.get('/registro', noAutenticado, (req, res) => {
     res.render('auth/registro');
 });
 
@@ -53,11 +56,16 @@ router.post('/registro', async (req, res) => {
     }
 });
 
-// GET: Cerrar Sesión
-router.get('/logout', (req, res, next) => {
+// GET: Cerrar Sesión (Protegido: si no estás logueado, redirige a /login)
+router.get('/logout', estaAutenticado, (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
-        res.redirect('/login');
+
+        req.session.destroy((err) => {
+            if (err) console.error('Error al destruir sesión:', err);
+            res.clearCookie('connect.sid');
+            res.redirect('/login');
+        });
     });
 });
 

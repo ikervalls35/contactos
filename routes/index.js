@@ -7,11 +7,11 @@ const { estaAutenticado } = require('../middlewares/auth');
 const { validarContacto } = require('../middlewares/validator');
 
 // Rutas de Autenticación
-router.get('/auth/login', authController.mostrarLogin);
-router.post('/auth/login', authController.login);
-router.get('/auth/registro', authController.mostrarRegistro);
-router.post('/auth/registro', authController.registro);
-router.get('/auth/logout', authController.logout);
+router.get('/login', authController.mostrarLogin);
+router.post('/login', authController.login);
+router.get('/registro', authController.mostrarRegistro);
+router.post('/registro', authController.registro);
+router.get('/logout', authController.logout);
 
 // Rutas de Contactos (Protegidas)
 router.get('/', (req, res) => res.redirect('/contactos'));
