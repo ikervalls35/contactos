@@ -77,5 +77,3 @@ ALTER DATABASE proyecto\_contactos OWNER TO alumno;
 3.  **Abrir en el navegador:**[http://localhost:8080/login](http://localhost:8080/login)
 
 Desarrollado por **Iker Valls Jiménez** - 2º DAW
-
-🔗[****Enlace IA****](https://share.gemini.google/fRYC48X3D6Pd)
