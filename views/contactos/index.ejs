@@ -100,12 +100,17 @@
                       </td>
                       <td class="text-end pe-4">
                         <% if (user) { %>
+                          <!-- Usuario autenticado: Botón de Editar -->
                           <a href="/contactos/<%= c.id %>/editar" class="btn btn-outline-primary btn-sm me-1"
                             title="Editar">
                             <i class="bi bi-pencil-square"></i>
                           </a>
                           <% } else { %>
-                            <span class="badge bg-secondary">Solo lectura</span>
+                            <!-- Usuario NO autenticado: Botón "Solo lectura" que envía a la ruta protegida -->
+                            <a href="/contactos/<%= c.id %>/editar" class="btn btn-outline-secondary btn-sm"
+                              title="Solo lectura">
+                              <i class="bi bi-eye me-1"></i> Solo lectura
+                            </a>
                             <% } %>
                       </td>
                     </tr>
