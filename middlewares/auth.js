@@ -1,13 +1,12 @@
-// Middleware para proteger rutas que requieren estar autenticado
+// middlewares/auth.js
 function estaAutenticado(req, res, next) {
     if (req.isAuthenticated && req.isAuthenticated()) {
         return next();
     }
-    req.flash('error_msg', 'Por favor, inicia sesión para acceder');
-    res.redirect('/auth/login');
+    // Redirige directamente al login sin intentar usar flash
+    res.redirect('/login');
 }
 
-// Middleware opcional para redirigir si ya está autenticado (ej: no mostrar login de nuevo)
 function noAutenticado(req, res, next) {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
         return next();
